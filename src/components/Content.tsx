@@ -11,7 +11,8 @@ type ContentProps = {
 
 function Content({ children }: ContentProps) {
   return (
-    <section>
+    // grows to fill the viewport so the collage can size its rows to it
+    <section className="flex flex-1 flex-col">
 
       {/* swappable */}
       {children}

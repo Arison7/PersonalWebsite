@@ -40,17 +40,17 @@ function SideNav() {
     <nav className="fixed inset-x-0 bottom-0 z-10 grid grid-cols-2 border-t border-line bg-paper lg:static lg:block lg:border-0">
       <button
         type="button"
-        onClick={() => setActivePage(Page.Hobbies)}
+        onClick={() => setActivePage(Page.Work)}
         className={`${base} lg:fixed lg:top-1/2 lg:left-7 lg:-translate-y-1/2`}
       >
-        ← Hobbies
+        ← Work
       </button>
       <button
         type="button"
-        onClick={() => setActivePage(Page.Projects)}
+        onClick={() => setActivePage(Page.Hobbies)}
         className={`${base} lg:fixed lg:top-1/2 lg:right-7 lg:-translate-y-1/2`}
       >
-        Projects →
+        Hobbies →
       </button>
     </nav>
   )
@@ -61,7 +61,7 @@ function Bio() {
     <>
       <SideNav />
 
-      <div className="mx-auto max-w-[1110px] px-6 pt-10 pb-24 lg:px-0 lg:pt-0 lg:pb-16">
+      <div className="mx-auto w-full max-w-[1110px] px-6 pt-10 pb-24 lg:px-0 lg:pt-0 lg:pb-16">
         <section className="flex flex-col gap-8 lg:min-h-svh lg:flex-row lg:items-center lg:gap-5">
           <div className="flex flex-col gap-8 lg:w-[510px] lg:shrink-0 lg:gap-11">
             <div className="flex flex-col gap-3.5 lg:gap-[18px]">

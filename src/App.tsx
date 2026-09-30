@@ -4,14 +4,14 @@ import Header from './components/Header'
 import Content from './components/Content'
 import Bio from './components/Bio'
 import Hobbies from './components/Hobbies'
-import Projects from './components/Projects'
+import Work from './components/Work'
 
 function App() {
   const { activePage } = usePage()
 
   return (
     <>
-      <Header />
+      {activePage !== Page.Bio && <Header />}
 
       <Content>
         {/* Only the active page is mounted — the others aren't in the tree.
@@ -30,7 +30,7 @@ function App() {
             overflow:auto div loses its scrollTop with the element. */}
         {activePage === Page.Bio && <Bio />}
         {activePage === Page.Hobbies && <Hobbies />}
-        {activePage === Page.Projects && <Projects />}
+        {activePage === Page.Work && <Work />}
       </Content>
     </>
   )
