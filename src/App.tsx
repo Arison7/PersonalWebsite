@@ -1,4 +1,3 @@
-import './App.css'
 import { Page } from './types'
 import { usePage } from './context/PageContext'
 import Header from './components/Header'
