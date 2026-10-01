@@ -3,6 +3,7 @@ import { imageTransitionName, projects } from '../projects'
 import { useVim, useVimBindings } from '../context/VimContext'
 import Kbd from './Kbd'
 import BottomBar from './BottomBar'
+import LoadingImage from './LoadingImage'
 
 // One project, written up blog style: the image from its collage block as the
 // hero (it morphs over from the block), then a single reading column.
@@ -38,7 +39,7 @@ function ProjectPage() {
       </header>
 
       <article className="pb-24 lg:pb-20">
-        <img
+        <LoadingImage
           src={project.image}
           alt=""
           style={{ viewTransitionName: imageTransitionName(project.slug) }}

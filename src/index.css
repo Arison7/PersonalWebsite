@@ -13,6 +13,8 @@
   --panel-2: #dbd3c3;
   --panel-3: #d1c8b6;
   --panel-4: #e0d8c9;
+  /* band that sweeps over an image still loading */
+  --shimmer: rgb(255 255 255 / 0.55);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -28,6 +30,7 @@
     --panel-2: #2d2b26;
     --panel-3: #35322c;
     --panel-4: #29271f;
+    --shimmer: rgb(255 255 255 / 0.07);
   }
 }
 
@@ -51,10 +54,38 @@
   /* collage: content fades in once the block has mostly widened */
   --animate-reveal: reveal 0.25s ease-out 0.25s both;
 
+  /* an image that just finished loading */
+  --animate-fade-in: reveal 0.2s ease-out;
+
   @keyframes reveal {
     from {
       opacity: 0;
     }
+  }
+}
+
+/* An image still loading: its box in the panel tone (the collage block's own,
+   else the first) with a lighter band sweeping across. Transparent text hides
+   the alt text Firefox draws in the meantime. Temporary look. */
+@utility shimmer {
+  background-color: var(--panel, var(--panel-1));
+  background-image: linear-gradient(100deg, transparent 35%, var(--shimmer) 50%, transparent 65%);
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  color: transparent;
+  animation: shimmer 1.4s linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
   }
 }
 

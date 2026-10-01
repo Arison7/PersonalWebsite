@@ -4,6 +4,7 @@ import type { CollageItem } from '../types'
 import { useElementWidth } from '../hooks/useElementWidth'
 import { useVimBindings } from '../context/VimContext'
 import { Link } from 'react-router-dom'
+import LoadingImage from './LoadingImage'
 
 // Shared parent for hobbies and work — both are laid out as a collage,
 // so the arrangement lives here and each page just supplies its own items.
@@ -99,7 +100,7 @@ function Block({
   const content = (
     <>
       {item.image && (
-        <img
+        <LoadingImage
           src={item.image}
           alt=""
           style={{

@@ -2,26 +2,45 @@ import { Page } from '../types'
 import { usePage } from '../hooks/usePage'
 import { useVim } from '../context/VimContext'
 import Kbd from './Kbd'
+import LoadingImage from './LoadingImage'
+import { FaGithub, FaLinkedinIn, FaRegEnvelope, FaRegFileLines } from 'react-icons/fa6'
 import photoLight from '../assets/photo-light.webp'
 import photoDark from '../assets/photo-dark.webp'
 
 // content for bio
 // All copy except the name is lorem ipsum until the real text is written.
 
-const links = ['GitHub', 'LinkedIn', 'CV.pdf', 'Email']
-
-const timeline = [
-  { year: 'YYYY', text: 'Lorem ipsum dolor sit amet' },
-  { year: 'YYYY', text: 'Consectetur adipiscing elit sed do eiusmod' },
-  { year: 'YYYY', text: 'Tempor incididunt ut labore et dolore magna aliqua' },
-  { year: 'YYYY', text: 'Ut enim ad minim veniam' },
-  { year: 'YYYY', text: 'Quis nostrud exercitation ullamco laboris' },
+const links = [
+  { label: 'GitHub', Icon: FaGithub },
+  { label: 'LinkedIn', Icon: FaLinkedinIn },
+  { label: 'CV (PDF)', Icon: FaRegFileLines },
+  { label: 'Email', Icon: FaRegEnvelope },
 ]
 
+// grouped by proficiency rather than topic, so a new skill only needs a level
 const skills = [
-  { label: 'languages', items: ['Lorem', 'Ipsum', 'Dolor'] },
-  { label: 'areas', items: ['Lorem ipsum', 'Dolor sit amet', 'Consectetur'] },
-  { label: 'tools', items: ['Lorem', 'Ipsum', 'Dolor'] },
+  { label: 'Confident', items: ['Lorem', 'Ipsum', 'Dolor'] },
+  { label: 'Comfortable', items: ['Lorem ipsum', 'Dolor sit amet', 'Consectetur'] },
+  { label: 'Learning', items: ['Lorem', 'Ipsum'] },
+]
+
+// newest first; subtitle and description are optional
+const timeline: { date: string; title: string; subtitle?: string; description?: string }[] = [
+  { date: 'YYYY', title: 'Lorem ipsum dolor', subtitle: 'Consectetur adipiscing elit' },
+  {
+    date: 'Mon YYYY – Mon YYYY',
+    title: 'Sed do eiusmod',
+    subtitle: 'Tempor incididunt · Ut labore',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+  },
+  {
+    date: 'Mon YYYY',
+    title: 'Ut enim ad minim veniam',
+    subtitle: 'Quis nostrud',
+    description: 'Exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+  },
+  { date: 'YYYY', title: 'Duis aute irure dolor' },
 ]
 
 // Mono label with a rule under it, heads each section.
@@ -64,23 +83,25 @@ function SideNav() {
 }
 
 // hand-drawn line along the cutout's edge, in the photo's own 599×960 space
+// TODO: the photo will change so this is not a solution
 const outline =
   'M580 531 L589 520 L598 518 L598 473 L587 470 L582 463 L512 430 L458 395 L447 384 L426 341 L425 334 L438 300 L448 275 L456 267 L464 250 L489 228 L507 197 L512 182 L512 165 L509 151 L494 125 L485 97 L466 64 L437 34 L401 29 L380 18 L341 17 L272 30 L253 39 L241 52 L223 86 L209 124 L208 143 L202 170 L211 183 L217 205 L229 267 L238 286 L238 293 L224 327 L215 334 L177 336 L143 341 L76 364 L44 380 L18 407 L18 465 L10 476 L0 477 L0 873 L5 872 L15 878'
 
 // Grayscale cutout with the outline traced over it, placed as in the mockup:
 // centred on phones, low in the right column on desktop. The dark variant is
 // retoned for the dark background and follows the OS, like the palette.
+// Shimmers until the photo is in; the outline waits for it.
 function Photo() {
   return (
-    <div className="absolute top-10 left-1/2 aspect-[599/960] w-40 -translate-x-1/2 lg:top-[300px] lg:left-[150px] lg:w-[281px] lg:translate-x-0">
+    <div className="group absolute top-10 left-1/2 aspect-[599/960] w-40 -translate-x-1/2 lg:top-[300px] lg:left-[150px] lg:w-[281px] lg:translate-x-0">
       <picture>
         <source media="(prefers-color-scheme: dark)" srcSet={photoDark} />
-        <img src={photoLight} alt="Photo of Łukasz" className="size-full" />
+        <LoadingImage src={photoLight} alt="Photo of Łukasz" className="size-full" />
       </picture>
       <svg
         viewBox="0 0 599 960"
         aria-hidden="true"
-        className="absolute inset-0 size-full translate-x-[3px] -translate-y-0.5"
+        className="absolute inset-0 size-full translate-x-[3px] -translate-y-0.5 opacity-0 transition-opacity duration-200 group-has-[img[data-loaded]]:opacity-100"
         fill="none"
         stroke="currentColor"
         strokeWidth={2.3}
@@ -106,35 +127,24 @@ function Bio() {
                 Łukasz Krysmalski
               </h1>
               <p className="text-lg leading-[1.55] lg:text-[21px]">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                veniam, quis nostrud exercitation.
+                I am 22 years old software developer from Poland. I am at my final year of studying in HZ university of applied science. This website is mostly designed to show off my skills and hobbies to potential employers and anyone else who got lost enough to arrive here.
               </p>
               <p className="text-base leading-[1.55] text-muted lg:text-lg">
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                dolore eu fugiat nulla pariatur.
+                temp
               </p>
-              <div className="flex flex-wrap gap-[18px] pt-1 font-mono text-sm lg:gap-[22px]">
-                {links.map((label) => (
-                  <a key={label} href="#" className="text-accent underline hover:text-accent-hover">
-                    {label}
+              <div className="flex gap-3 pt-1.5">
+                {links.map((link) => (
+                  <a
+                    key={link.label}
+                    href="#"
+                    aria-label={link.label}
+                    title={link.label}
+                    className="flex size-11 items-center justify-center rounded-full border-[1.5px] border-line text-ink hover:border-accent hover:text-accent"
+                  >
+                    <link.Icon aria-hidden="true" className="size-5" />
                   </a>
                 ))}
               </div>
-            </div>
-
-            <div className="flex flex-col gap-3.5">
-              <SectionLabel>timeline</SectionLabel>
-              <ol className="flex flex-col gap-3.5">
-                {timeline.map((entry, i) => (
-                  <li key={i} className="flex gap-4 text-base leading-[1.4] lg:gap-5 lg:text-[17px]">
-                    <span className="w-14 shrink-0 pt-0.5 font-mono text-[13px] text-muted lg:w-16 lg:text-sm">
-                      {entry.year}
-                    </span>
-                    <span>{entry.text}</span>
-                  </li>
-                ))}
-              </ol>
             </div>
           </div>
 
@@ -144,13 +154,13 @@ function Bio() {
           </div>
         </section>
 
-        <section className="mt-8 flex flex-col gap-3.5 lg:mt-14 lg:gap-7">
-          <SectionLabel>skills</SectionLabel>
-          <div className="grid gap-3.5 lg:grid-cols-3 lg:gap-10">
+        <section className="mt-8 flex flex-col gap-6 lg:mt-20">
+          <SectionLabel>Skills</SectionLabel>
+          <div className="grid gap-[26px] lg:grid-cols-3 lg:gap-9">
             {skills.map((group) => (
-              <div key={group.label} className="flex flex-col gap-1.5 lg:gap-2.5">
-                <span className="font-mono text-[13px] text-muted">{group.label}</span>
-                <ul className="text-[17px] leading-normal lg:text-[19px] lg:leading-[1.6]">
+              <div key={group.label} className="flex flex-col gap-3.5">
+                <span className="font-mono text-[13px] text-accent">{group.label}</span>
+                <ul className="flex flex-col gap-0.5 text-[17px] leading-[1.35] lg:text-[19px]">
                   {group.items.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
@@ -160,16 +170,31 @@ function Bio() {
           </div>
         </section>
 
-        <section className="mt-8 flex flex-col gap-3 lg:mt-20 lg:gap-3.5">
-          <SectionLabel>contact</SectionLabel>
-          <p className="text-[17px] leading-normal lg:text-[21px] lg:leading-[1.55]">
-            Lorem ipsum dolor sit amet{' '}
-            <a href="#" className="text-accent underline hover:text-accent-hover">
-              lorem@ipsum.dolor
-            </a>
-            .
-          </p>
-          <span className="pt-6 font-mono text-[13px] text-muted">© 2026 Łukasz</span>
+        <section className="mt-16 flex flex-col gap-7 lg:mt-24 lg:gap-[34px]">
+          <SectionLabel>Timeline</SectionLabel>
+          <ol className="flex flex-col gap-7 lg:gap-[34px]">
+            {timeline.map((entry, i) => (
+              <li
+                key={i}
+                className="flex flex-col gap-1.5 lg:grid lg:grid-cols-[190px_minmax(0,1fr)] lg:gap-8"
+              >
+                <span className="font-mono text-sm text-muted lg:pt-1">{entry.date}</span>
+                <div className="flex min-w-0 flex-col gap-1.5">
+                  <span className="text-[19px] leading-[1.3] font-semibold lg:text-[21px]">
+                    {entry.title}
+                  </span>
+                  {entry.subtitle && (
+                    <span className="font-mono text-[13px] text-muted">{entry.subtitle}</span>
+                  )}
+                  {entry.description && (
+                    <p className="max-w-[640px] text-base leading-[1.55] lg:text-[17px]">
+                      {entry.description}
+                    </p>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
         </section>
       </div>
     </>
