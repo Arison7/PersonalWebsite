@@ -1,38 +1,34 @@
+import { ScrollRestoration } from 'react-router-dom'
 import { Page } from './types'
-import { usePage } from './context/PageContext'
+import { usePage } from './hooks/usePage'
+import { VimProvider } from './context/VimContext'
 import Header from './components/Header'
 import Content from './components/Content'
-import Bio from './components/Bio'
-import Hobbies from './components/Hobbies'
-import Work from './components/Work'
+import KeysDialog from './components/KeysDialog'
+import KeysCorner from './components/KeysCorner'
+
+// Layout around every route; the page itself is the router's <Outlet /> in
+// Content. Only the active page is mounted, so switching away discards that
+// page's own state (useState, animation progress). If a page should come back
+// exactly as it was left, lift that state up here.
 
 function App() {
-  const { activePage } = usePage()
+  const { activePage, subpage } = usePage()
 
   return (
-    <>
-      {activePage !== Page.Bio && <Header />}
+    // inside the router: h / l switch pages by navigating
+    <VimProvider>
+      {/* subpages (a project) bring their own header */}
+      {activePage !== Page.Bio && !subpage && <Header />}
 
-      <Content>
-        {/* Only the active page is mounted — the others aren't in the tree.
-            TODO: they're all still in the main bundle though (static imports).
-            When the collage has real weight, split them with
-            lazy(() => import('./components/Hobbies')) + <Suspense>, then warm
-            the chunks in a useEffect after first paint so switching stays
-            instant. Images will need their own prefetch, separately.
-            TODO: unmounting discards a page's own state — useState, form
-            inputs, animation progress. If a page should come back exactly as
-            it was left, move that state into PageContext or render all three
-            and toggle CSS visibility instead.
-            Scroll is a separate question and depends on the scroller: window
-            scroll isn't lost on unmount, it just carries over to the next page
-            (so it may need an explicit reset), whereas an inner
-            overflow:auto div loses its scrollTop with the element. */}
-        {activePage === Page.Bio && <Bio />}
-        {activePage === Page.Hobbies && <Hobbies />}
-        {activePage === Page.Work && <Work />}
-      </Content>
-    </>
+      <Content />
+
+      <KeysCorner />
+      <KeysDialog />
+
+      {/* new page starts at the top; back / forward restore where you were */}
+      <ScrollRestoration />
+    </VimProvider>
   )
 }
 

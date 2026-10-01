@@ -1,5 +1,9 @@
 import { Page } from '../types'
-import { usePage } from '../context/PageContext'
+import { usePage } from '../hooks/usePage'
+import { useVim } from '../context/VimContext'
+import Kbd from './Kbd'
+import photoLight from '../assets/photo-light.webp'
+import photoDark from '../assets/photo-dark.webp'
 
 // content for bio
 // All copy except the name is lorem ipsum until the real text is written.
@@ -33,8 +37,9 @@ function SectionLabel({ children }: { children: string }) {
 // a bar along the bottom on smaller screens.
 function SideNav() {
   const { setActivePage } = usePage()
+  const { enabled } = useVim()
   const base =
-    'flex min-h-11 items-center justify-center px-2.5 py-3 font-mono text-sm text-ink hover:text-accent'
+    'flex min-h-11 items-center justify-center px-2.5 py-3 font-mono text-sm text-ink hover:text-accent lg:flex-col lg:gap-2'
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-10 grid grid-cols-2 border-t border-line bg-paper lg:static lg:block lg:border-0">
@@ -44,6 +49,7 @@ function SideNav() {
         className={`${base} lg:fixed lg:top-1/2 lg:left-7 lg:-translate-y-1/2`}
       >
         ← Work
+        {enabled && <Kbd className="hidden lg:inline">h</Kbd>}
       </button>
       <button
         type="button"
@@ -51,8 +57,39 @@ function SideNav() {
         className={`${base} lg:fixed lg:top-1/2 lg:right-7 lg:-translate-y-1/2`}
       >
         Hobbies →
+        {enabled && <Kbd className="hidden lg:inline">l</Kbd>}
       </button>
     </nav>
+  )
+}
+
+// hand-drawn line along the cutout's edge, in the photo's own 599×960 space
+const outline =
+  'M580 531 L589 520 L598 518 L598 473 L587 470 L582 463 L512 430 L458 395 L447 384 L426 341 L425 334 L438 300 L448 275 L456 267 L464 250 L489 228 L507 197 L512 182 L512 165 L509 151 L494 125 L485 97 L466 64 L437 34 L401 29 L380 18 L341 17 L272 30 L253 39 L241 52 L223 86 L209 124 L208 143 L202 170 L211 183 L217 205 L229 267 L238 286 L238 293 L224 327 L215 334 L177 336 L143 341 L76 364 L44 380 L18 407 L18 465 L10 476 L0 477 L0 873 L5 872 L15 878'
+
+// Grayscale cutout with the outline traced over it, placed as in the mockup:
+// centred on phones, low in the right column on desktop. The dark variant is
+// retoned for the dark background and follows the OS, like the palette.
+function Photo() {
+  return (
+    <div className="absolute top-10 left-1/2 aspect-[599/960] w-40 -translate-x-1/2 lg:top-[300px] lg:left-[150px] lg:w-[281px] lg:translate-x-0">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcSet={photoDark} />
+        <img src={photoLight} alt="Photo of Łukasz" className="size-full" />
+      </picture>
+      <svg
+        viewBox="0 0 599 960"
+        aria-hidden="true"
+        className="absolute inset-0 size-full translate-x-[3px] -translate-y-0.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2.3}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d={outline} vectorEffect="non-scaling-stroke" />
+      </svg>
+    </div>
   )
 }
 
@@ -101,8 +138,10 @@ function Bio() {
             </div>
           </div>
 
-          {/* photo + sketches go here later; empty for now */}
-          <div aria-hidden="true" className="h-[300px] lg:h-[760px] lg:w-[580px] lg:shrink-0" />
+          {/* sketches around the photo go here later */}
+          <div className="relative h-[300px] lg:h-[760px] lg:w-[580px] lg:shrink-0">
+            <Photo />
+          </div>
         </section>
 
         <section className="mt-8 flex flex-col gap-3.5 lg:mt-14 lg:gap-7">

@@ -1,7 +1,9 @@
-import { useState } from 'react'
-import type { CSSProperties } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import type { CSSProperties, RefCallback } from 'react'
 import type { CollageItem } from '../types'
 import { useElementWidth } from '../hooks/useElementWidth'
+import { useVimBindings } from '../context/VimContext'
+import { Link } from 'react-router-dom'
 
 // Shared parent for hobbies and work — both are laid out as a collage,
 // so the arrangement lives here and each page just supplies its own items.
@@ -15,6 +17,8 @@ import { useElementWidth } from '../hooks/useElementWidth'
 // behind the title; hovering or focusing widens the block to uncover the whole
 // image, and the title and description come up over a fade at the bottom.
 // Mouse leave / blur closes it again, so none is open by default.
+// j / k move focus to the next / previous block, which opens it.
+// A block with a link goes to its page when clicked open (Enter from the keys).
 
 // how much wider the open block gets than its closed siblings
 const OPEN_GROW = 5
@@ -51,9 +55,25 @@ type BlockProps = {
   openWidth: number
   onOpen: () => void
   onClose: () => void
+  // hover, kept apart from focus so the collage can ignore it while j / k drive
+  onHoverStart: () => void
+  onHoverEnd: () => void
+  ref?: RefCallback<HTMLElement>
 }
 
-function Block({ item, index, active, slanted, first, openWidth, onOpen, onClose }: BlockProps) {
+function Block({
+  item,
+  index,
+  active,
+  slanted,
+  first,
+  openWidth,
+  onOpen,
+  onClose,
+  onHoverStart,
+  onHoverEnd,
+  ref,
+}: BlockProps) {
   const open = active || !slanted
   const number = String(index + 1).padStart(2, '0')
 
@@ -63,28 +83,29 @@ function Block({ item, index, active, slanted, first, openWidth, onOpen, onClose
     '--panel': `var(--panel-${(index % 4) + 1})`,
   } as CSSProperties
 
-  return (
-    <button
-      type="button"
-      aria-expanded={open}
-      onMouseEnter={onOpen}
-      onMouseLeave={onClose}
-      onFocus={onOpen}
-      onBlur={onClose}
-      // touch has no hover: a tap opens it
-      onClick={onOpen}
-      style={style}
-      className={[
-        '@container relative min-w-0 basis-0 cursor-pointer overflow-hidden bg-(--panel) text-left transition-[flex-grow] duration-450 ease-out',
-        slanted ? slant : 'min-h-[420px]',
-        slanted && !first ? '-ml-10' : '',
-      ].join(' ')}
-    >
+  const shared = {
+    onMouseEnter: onHoverStart,
+    onMouseLeave: onHoverEnd,
+    onFocus: onOpen,
+    onBlur: onClose,
+    style,
+    className: [
+      '@container relative min-w-0 basis-0 cursor-pointer overflow-hidden bg-(--panel) text-left transition-[flex-grow] duration-450 ease-out',
+      slanted ? slant : 'min-h-[420px]',
+      slanted && !first ? '-ml-10' : '',
+    ].join(' '),
+  }
+
+  const content = (
+    <>
       {item.image && (
         <img
           src={item.image}
           alt=""
-          style={{ width: slanted && openWidth > 0 ? openWidth : '100%' }}
+          style={{
+            width: slanted && openWidth > 0 ? openWidth : '100%',
+            viewTransitionName: item.imageTransitionName,
+          }}
           className={`absolute inset-y-0 left-0 h-full max-w-none object-cover transition-[filter] duration-450 ${open ? '' : 'grayscale'}`}
         />
       )}
@@ -125,6 +146,34 @@ function Block({ item, index, active, slanted, first, openWidth, onOpen, onClose
           </span>
         </>
       )}
+    </>
+  )
+
+  // A block with a page is a real link (middle-click, open in new tab). It
+  // follows the link once open: hover, focus and phone cards are open already,
+  // so only a tap on a closed slanted block (touch) just opens it first.
+  if (item.link) {
+    return (
+      <Link
+        {...shared}
+        ref={ref}
+        to={item.link}
+        viewTransition
+        onClick={(e) => {
+          if (open) return
+          e.preventDefault()
+          onOpen()
+        }}
+      >
+        {content}
+      </Link>
+    )
+  }
+
+  return (
+    // touch has no hover: a tap opens it
+    <button {...shared} ref={ref} type="button" aria-expanded={open} onClick={onOpen}>
+      {content}
     </button>
   )
 }
@@ -137,6 +186,42 @@ type CollageProps = {
 function Collage({ items, minBlockWidth = 320 }: CollageProps) {
   const [ref, width] = useElementWidth<HTMLDivElement>()
   const [active, setActive] = useState<number | null>(null)
+  const blocks = useRef<(HTMLElement | null)[]>([])
+
+  // Set while j / k are driving. Scrolling slides blocks under a resting
+  // pointer, and the browser reports that as hovering them, which would steal
+  // the open block from the focused one. So hover is ignored until the pointer
+  // really moves (scroll-made mouse events have no movement).
+  const usingKeys = useRef(false)
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      if (e.movementX || e.movementY) usingKeys.current = false
+    }
+    window.addEventListener('mousemove', onMove)
+    return () => window.removeEventListener('mousemove', onMove)
+  }, [])
+
+  // Steps from the focused block, else the hovered one; from nothing open,
+  // j starts at the first block and k at the last.
+  const step = (dir: 1 | -1) => {
+    const focused = blocks.current.findIndex((el) => el === document.activeElement)
+    const current = focused !== -1 ? focused : active
+    const next =
+      current === null
+        ? dir === 1
+          ? 0
+          : items.length - 1
+        : Math.min(Math.max(current + dir, 0), items.length - 1)
+
+    const el = blocks.current[next]
+    if (!el) return
+    usingKeys.current = true
+    el.focus({ preventScroll: true })
+    // centre the block's row; focus' own scroll only nudges it to the edge
+    el.parentElement?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+  }
+  useVimBindings({ j: () => step(1), k: () => step(-1) })
 
   const perRow = Math.max(1, Math.floor(width / minBlockWidth))
   const rows = splitRows(
@@ -145,7 +230,8 @@ function Collage({ items, minBlockWidth = 320 }: CollageProps) {
   )
 
   return (
-    <section className="mx-auto flex w-full max-w-[1360px] flex-1 px-6 pb-10 lg:px-10">
+    // pb-24 keeps the last card clear of the bottom bar on phones
+    <section className="mx-auto flex w-full max-w-[1360px] flex-1 px-6 pb-24 lg:px-10 lg:pb-10">
       <div ref={ref} className="flex flex-1 flex-col gap-6 lg:gap-10">
         {rows.map((row, r) => {
           // the blocks split the row width plus their overlaps by flex-grow
@@ -160,6 +246,9 @@ function Collage({ items, minBlockWidth = 320 }: CollageProps) {
               {row.map(({ item, index }, i) => (
                 <Block
                   key={index}
+                  ref={(el) => {
+                    blocks.current[index] = el
+                  }}
                   item={item}
                   index={index}
                   active={index === active}
@@ -170,6 +259,10 @@ function Collage({ items, minBlockWidth = 320 }: CollageProps) {
                   // only close if this block is still the open one; moving
                   // straight onto the next block opens that one instead
                   onClose={() => setActive((current) => (current === index ? null : current))}
+                  onHoverStart={() => !usingKeys.current && setActive(index)}
+                  onHoverEnd={() =>
+                    !usingKeys.current && setActive((current) => (current === index ? null : current))
+                  }
                 />
               ))}
             </div>

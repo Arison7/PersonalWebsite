@@ -1,5 +1,5 @@
 // Which page is currently active.
-// Values double as the URL path segment once the router goes in.
+// Each has a URL, see pagePaths in hooks/usePage.
 export enum Page {
   Bio = 'bio',
   Hobbies = 'hobbies',
@@ -14,4 +14,8 @@ export type CollageItem = {
   image?: string
   // short mono line under the description: stack, dates, role
   meta?: string
+  // where clicking the open block goes; without it the block only opens
+  link?: string
+  // view-transition-name for the image, to morph it into the linked page
+  imageTransitionName?: string
 }

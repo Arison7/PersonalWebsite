@@ -1,21 +1,16 @@
-import type { ReactNode } from 'react'
+import { Outlet } from 'react-router-dom'
 
 // Both navigations are part of this section.
-// This is where the changes happen during navigation — whatever is passed as
-// children is the swappable part. Later this becomes the route layout and
-// children gets replaced by react-router's <Outlet />.
+// This is where the changes happen during navigation — the router renders the
+// active page into the <Outlet />, the swappable part.
 
-type ContentProps = {
-  children?: ReactNode
-}
-
-function Content({ children }: ContentProps) {
+function Content() {
   return (
     // grows to fill the viewport so the collage can size its rows to it
     <section className="flex flex-1 flex-col">
 
       {/* swappable */}
-      {children}
+      <Outlet />
 
     </section>
   )
