@@ -23,7 +23,7 @@ export type Project = {
   Body: ComponentType
 }
 
-const real: Project[] = [
+export const projects: Project[] = [
   {
     slug: 'muzeyt',
     title: 'Muzeyt',
@@ -74,12 +74,6 @@ const real: Project[] = [
     Body: PersonalWebsite,
   },
 ]
-
-// TEMP: pad to 10 to test the collage's row layout; each gets its own slug so
-// every block still has a page
-export const projects: Project[] = Array.from({ length: 10 }, (_, i) =>
-  real[i] ?? { ...real[i % real.length], slug: `lorem-${i + 1}`, title: `Lorem ${i + 1}` },
-)
 
 // Shared by the collage block's image and the project page's hero, so the
 // browser morphs one into the other on navigation (View Transitions).
