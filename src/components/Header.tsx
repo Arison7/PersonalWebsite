@@ -11,8 +11,8 @@ import BottomBar from './BottomBar'
 function Header() {
   const { activePage, setActivePage } = usePage()
   const { enabled } = useVim()
-  const bioOnLeft = activePage === Page.Hobbies
-  const title = activePage === Page.Hobbies ? 'Hobbies' : 'Work'
+  const bioOnLeft = activePage === Page.Interests
+  const title = activePage === Page.Interests ? 'Interests' : 'Work'
 
   const back = (className: string) => (
     <button

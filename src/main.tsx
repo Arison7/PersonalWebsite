@@ -4,7 +4,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import Bio from './components/Bio.tsx'
-import Hobbies from './components/Hobbies.tsx'
+import Interests from './components/Interests.tsx'
 import Work from './components/Work.tsx'
 import ProjectPage from './components/ProjectPage.tsx'
 import { pagePaths } from './hooks/usePage.ts'
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: pagePaths[Page.Bio], element: <Bio /> },
-      { path: pagePaths[Page.Hobbies], element: <Hobbies /> },
+      { path: pagePaths[Page.Interests], element: <Interests /> },
       { path: pagePaths[Page.Work], element: <Work /> },
       { path: `${pagePaths[Page.Work]}/:slug`, element: <ProjectPage /> },
       { path: '*', element: <Navigate to={pagePaths[Page.Bio]} replace /> },

@@ -7,7 +7,7 @@ import Kbd from './Kbd'
 
 const keys = [
   { keys: ['h', 'l'], text: 'page to the left / right' },
-  { keys: ['j', 'k'], text: 'scroll down / up, or next / previous block on Hobbies and Work' },
+  { keys: ['j', 'k'], text: 'scroll down / up, or next / previous block on Interests and Work' },
   { keys: ['g g', 'G'], text: 'top / bottom' },
   { keys: ['Esc'], text: 'close an open block' },
   { keys: ['?'], text: 'show or hide this' },

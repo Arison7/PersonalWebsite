@@ -6,7 +6,7 @@ import { useVimBindings } from '../context/VimContext'
 import { Link } from 'react-router-dom'
 import LoadingImage from './LoadingImage'
 
-// Shared parent for hobbies and work — both are laid out as a collage,
+// Shared parent for interests and work — both are laid out as a collage,
 // so the arrangement lives here and each page just supplies its own items.
 //
 // Blocks never get narrower than minBlockWidth. When they don't fit in one

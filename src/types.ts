@@ -2,11 +2,11 @@
 // Each has a URL, see pagePaths in hooks/usePage.
 export enum Page {
   Bio = 'bio',
-  Hobbies = 'hobbies',
+  Interests = 'interests',
   Work = 'work',
 }
 
-// One block in a collage (hobbies, work).
+// One block in a collage (interests, work).
 export type CollageItem = {
   title: string
   description: string

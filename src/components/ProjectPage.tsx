@@ -5,9 +5,14 @@ import Kbd from './Kbd'
 import BottomBar from './BottomBar'
 import LoadingImage from './LoadingImage'
 
-// One project, written up blog style: the image from its collage block as the
-// hero (it morphs over from the block), then a single reading column.
-// The body is lorem ipsum, the same for every project, until real write-ups exist.
+// The template every project's page shares, written up blog style: the image
+// from its collage block as the hero (it morphs over from the block), then a
+// single reading column. What goes in the column is the project's own Body
+// (src/projects/<slug>.tsx); its plain <p> and <h2> are styled here.
+
+// styles the Body's own elements, so a write-up stays plain markup
+const prose =
+  'flex flex-col gap-5 pt-4 text-[17px] leading-[1.7] lg:text-[19px] [&_h2]:pt-4 [&_h2]:text-2xl [&_h2]:font-semibold lg:[&_h2]:text-[28px]'
 
 const back = 'flex min-h-11 items-center gap-2.5 px-2.5 font-mono text-sm text-ink hover:text-accent'
 
@@ -54,30 +59,8 @@ function ProjectPage() {
           <p className="text-lg leading-[1.55] lg:text-[21px]">{project.description}</p>
           <span className="border-b border-line pb-6 font-mono text-[13px] text-muted">{project.meta}</span>
 
-          <div className="flex flex-col gap-5 pt-4 text-[17px] leading-[1.7] lg:text-[19px]">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </p>
-
-            <h2 className="pt-4 text-2xl font-semibold lg:text-[28px]">Lorem ipsum</h2>
-            <p>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-              officia deserunt mollit anim id est laborum.
-            </p>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-              laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-              architecto beatae vitae dicta sunt explicabo.
-            </p>
-
-            <h2 className="pt-4 text-2xl font-semibold lg:text-[28px]">Dolor sit amet</h2>
-            <p>
-              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-              consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-            </p>
+          <div className={prose}>
+            <project.Body />
           </div>
 
           <Link to="/work" viewTransition className={`${back} -ml-2.5 mt-10 hidden w-fit lg:flex`}>

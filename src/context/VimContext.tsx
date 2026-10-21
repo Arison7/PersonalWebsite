@@ -35,7 +35,7 @@ const VimContext = createContext<VimContextValue>({
 })
 
 // pages as they sit on screen, left to right; h / l step along this line
-const order = [Page.Work, Page.Bio, Page.Hobbies]
+const order = [Page.Work, Page.Bio, Page.Interests]
 
 const STORAGE_KEY = 'vim-keys'
 // how long the first g of gg waits for the second

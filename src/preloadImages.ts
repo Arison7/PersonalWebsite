@@ -1,4 +1,4 @@
-import { hobbies } from './hobbies'
+import { interests } from './interests'
 import { projects } from './projects'
 import photoLight from './assets/photo-light.webp'
 import photoDark from './assets/photo-dark.webp'
@@ -32,7 +32,7 @@ export function allPageImages() {
   const dark = window.matchMedia('(prefers-color-scheme: dark)').matches
   const urls = [
     dark ? photoDark : photoLight,
-    ...hobbies.map((item) => item.image),
+    ...interests.map((item) => item.image),
     ...projects.map((project) => project.image),
   ]
   return [...new Set(urls.filter((url): url is string => !!url))]

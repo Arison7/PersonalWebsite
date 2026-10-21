@@ -8,7 +8,7 @@ import { Page } from '../types'
 
 export const pagePaths: Record<Page, string> = {
   [Page.Bio]: '/',
-  [Page.Hobbies]: '/hobbies',
+  [Page.Interests]: '/interests',
   [Page.Work]: '/work',
 }
 

@@ -72,10 +72,10 @@ function SideNav() {
       </button>
       <button
         type="button"
-        onClick={() => setActivePage(Page.Hobbies)}
+        onClick={() => setActivePage(Page.Interests)}
         className={`${base} lg:fixed lg:top-1/2 lg:right-7 lg:-translate-y-1/2`}
       >
-        Hobbies →
+        Interests →
         {enabled && <Kbd className="hidden lg:inline">l</Kbd>}
       </button>
     </nav>
