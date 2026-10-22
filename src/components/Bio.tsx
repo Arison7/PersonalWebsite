@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Page } from '../types'
 import { usePage } from '../hooks/usePage'
 import { useVim } from '../context/VimContext'
@@ -24,24 +25,90 @@ const skills = [
   { label: 'Learning', items: ['Lorem', 'Ipsum'] },
 ]
 
-// newest first; subtitle and description are optional
-const timeline: { date: string; title: string; subtitle?: string; description?: string }[] = [
-  { date: 'YYYY', title: 'Lorem ipsum dolor', subtitle: 'Consectetur adipiscing elit' },
+// newest first; subtitle, description and project are optional.
+// project is a Work slug: the title then links to /work/<slug>.
+// **text** in a description renders bold, for languages and technologies
+const timeline: {
+  date: string
+  title: string
+  subtitle?: string
+  description?: string
+  project?: string
+}[] = [
   {
-    date: 'Mon YYYY – Mon YYYY',
-    title: 'Sed do eiusmod',
-    subtitle: 'Tempor incididunt · Ut labore',
+    date: '2023 – 2027',
+    title: 'BSc Information and Communication Technology',
+    subtitle: 'HZ University of Applied Sciences',
+    description: `Progressed from basics of computer science, game and web development
+through a **Svelte** and **PHP/Laravel** web application for a real client (Stedin) in an agile
+workflow, to microservices in **TypeScript** and basics of data science in **Python**.
+Currently in my last year working on a product for Meijers Potato.`
+  },
+  {
+    date: 'Feb 2026 – Jun 2026',
+    title: 'Rust Developer',
+    project: 'crsf-fuzzer',
+    subtitle: 'Internship at the Austrian Institute of Technology',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      `During this internship I was the main developer of a black box **CRSF**
+protocol fuzzer in **Rust**, run against a cyber-physical system.
+Working under the guidance of Dr. Matthias Eckhart, I was involved at
+every step of the project, from the initial research and brainstorming
+sessions where we decided how to move forward, to building and
+maintaining a decently sized codebase from the ground up with a
+lot of novel features. Along the way I picked up practical pointers on
+the basics of electrical engineering and gained hands on practice in
+specific Rust areas such as multithreaded programming, multi
+target compilation, and advanced generic traits. Being on the
+offensive side of a security project also taught me how protocols fail
+under unexpected input, and how a fuzzer can surface weaknesses
+that would be hard to find by reading code alone.`,
   },
   {
-    date: 'Mon YYYY',
-    title: 'Ut enim ad minim veniam',
-    subtitle: 'Quis nostrud',
-    description: 'Exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    date: 'Sep 2025 – Dec 2025',
+    title: 'Muzeyt',
+    project: 'muzeyt',
+    subtitle: 'Personal project',
+    description: 'A terminal music player, built as a project to learn more about async **Rust**.',
   },
-  { date: 'YYYY', title: 'Duis aute irure dolor' },
+  {
+    date: 'Sep 2025 – Dec 2025',
+    title: 'Exchange semester',
+    subtitle: 'Fachhochschule Vorarlberg',
+    description:
+      'Chose the university with the best subjects on offer: Augmented Reality, embedded programming in **C** on a **Raspberry Pi**, DevOps, Mobile App Development, Computer Graphics, Blockchain Technologies and German for internationals.',
+  },
+  {
+    date: 'Jun 2022 – May 2023',
+    title: 'Messager API',
+    project: 'messager-api',
+    subtitle: 'Personal project',
+    description:
+      'A real-time chat app built to showcase my skills: a **Django REST** back end with a **TypeScript** and **React** front end styled with **Sass**. Chat and message updates are pushed live over **WebSockets** with **Django Channels**, which replaced my first **Server-Sent Events** version after it performed poorly. The back-end models are covered by unit tests.',
+  },
+  {
+    date: 'May 2022 – Jul 2023',
+    title: 'LeetCode',
+    project: 'leetcode',
+    subtitle: 'Before university',
+    description:
+      'Built up fundamentals in optimisation and problem solving: nearly 500 problems solved, mostly in **C++**, with a 13-month daily streak.',
+  },
+  { 
+    date: '2019',
+    title: 'Introduction to programming', 
+    description: "I started my journey with simple courses first for **C++** then **Python**, I cannot even recall the names now. Then I did like a class a week and random Python projects without much merit to them during my high school days. Most of them in Python, but also some in **TypeScript**. Very simple stuff some in **pygame**, some on LeetCode and on CodinGame. Back in those days there was no AI pressure so taking things slowly didn't feel bad at all."
+      
+    
+  },
 ]
+
+// Turns **marked** spans of a description into <strong>.
+function emphasise(text: string) {
+  return text
+    .split(/\*\*(.+?)\*\*/)
+    .map((part, i) => (i % 2 ? <strong key={i} className="font-bold">{part}</strong> : part))
+}
 
 // Mono label with a rule under it, heads each section.
 function SectionLabel({ children }: { children: string }) {
@@ -181,14 +248,24 @@ function Bio() {
                 <span className="font-mono text-sm text-muted lg:pt-1">{entry.date}</span>
                 <div className="flex min-w-0 flex-col gap-1.5">
                   <span className="text-[19px] leading-[1.3] font-semibold lg:text-[21px]">
-                    {entry.title}
+                    {entry.project ? (
+                      <Link
+                        to={`/work/${entry.project}`}
+                        viewTransition
+                        className="underline decoration-1 underline-offset-4 hover:text-accent"
+                      >
+                        {entry.title}
+                      </Link>
+                    ) : (
+                      entry.title
+                    )}
                   </span>
                   {entry.subtitle && (
                     <span className="font-mono text-[13px] text-muted">{entry.subtitle}</span>
                   )}
                   {entry.description && (
                     <p className="max-w-[640px] text-base leading-[1.55] lg:text-[17px]">
-                      {entry.description}
+                      {emphasise(entry.description)}
                     </p>
                   )}
                 </div>
