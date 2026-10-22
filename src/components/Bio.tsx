@@ -4,6 +4,7 @@ import { usePage } from '../hooks/usePage'
 import { useVim } from '../context/VimContext'
 import Kbd from './Kbd'
 import LoadingImage from './LoadingImage'
+import LanguageFlags from './LanguageFlags'
 import { FaGithub, FaLinkedinIn, FaRegEnvelope, FaRegFileLines } from 'react-icons/fa6'
 import photoLight from '../assets/photo-light.webp'
 import photoDark from '../assets/photo-dark.webp'
@@ -11,19 +12,42 @@ import photoDark from '../assets/photo-dark.webp'
 // content for bio
 // All copy except the name is lorem ipsum until the real text is written.
 
+// all but email open in a new tab; the CV is served from public/
 const links = [
-  { label: 'GitHub', Icon: FaGithub },
-  { label: 'LinkedIn', Icon: FaLinkedinIn },
-  { label: 'CV (PDF)', Icon: FaRegFileLines },
-  { label: 'Email', Icon: FaRegEnvelope },
+  { label: 'GitHub', href: 'https://github.com/Arison7', Icon: FaGithub },
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/%C5%82ukasz-krysmalski-13a9a721a/',
+    Icon: FaLinkedinIn,
+  },
+  { label: 'CV (PDF)', href: '/Lukasz-Krysmalski-CV.pdf', Icon: FaRegFileLines },
+  { label: 'Email', href: 'mailto:lucaskrysmalski@gmail.com', Icon: FaRegEnvelope },
 ]
 
 // grouped by proficiency rather than topic, so a new skill only needs a level
 const skills = [
-  { label: 'Confident', items: ['Lorem', 'Ipsum', 'Dolor'] },
-  { label: 'Comfortable', items: ['Lorem ipsum', 'Dolor sit amet', 'Consectetur'] },
-  { label: 'Learning', items: ['Lorem', 'Ipsum'] },
+  {
+    label: 'Confident',
+    items: [
+      'Rust',
+      'Async programming',
+      'TypeScript / JavaScript',
+      'Python',
+      'React',
+      'Django & Django REST Framework',
+      'SQL',
+      'Algorithms & data structures',
+      'Git',
+      'Linux',
+    ],
+  },
+  {
+    label: 'Comfortable',
+    items: ['C++', 'REST APIs', 'PHP / Laravel', 'Svelte'],
+  },
+  { label: 'Familiar', items: ['C', 'DevOps & CI', 'React Native'] },
 ]
+
 
 // newest first; subtitle, description and project are optional.
 // project is a Work slug: the title then links to /work/<slug>.
@@ -194,16 +218,21 @@ function Bio() {
                 Łukasz Krysmalski
               </h1>
               <p className="text-lg leading-[1.55] lg:text-[21px]">
-                I am 22 years old software developer from Poland. I am at my final year of studying in HZ university of applied science. This website is mostly designed to show off my skills and hobbies to potential employers and anyone else who got lost enough to arrive here.
+                I am a 22-year-old software developer from Poland. I am in my final year of studying at HZ University of Applied Sciences. This website is mostly designed to show off my skills and hobbies to potential employers and anyone else who got lost enough to arrive here.
               </p>
               <p className="text-base leading-[1.55] text-muted lg:text-lg">
-                temp
+                I am currently looking for my Bachelor thesis project job opportunity starting from February 2027. I am also open to smaller side hustles in the meantime.
               </p>
+              <LanguageFlags />
               <div className="flex gap-3 pt-1.5">
                 {links.map((link) => (
                   <a
                     key={link.label}
-                    href="#"
+                    href={link.href}
+                    {...(!link.href.startsWith('mailto:') && {
+                      target: '_blank',
+                      rel: 'noopener noreferrer',
+                    })}
                     aria-label={link.label}
                     title={link.label}
                     className="flex size-11 items-center justify-center rounded-full border-[1.5px] border-line text-ink hover:border-accent hover:text-accent"
