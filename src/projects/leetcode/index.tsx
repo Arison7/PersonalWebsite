@@ -1,5 +1,6 @@
-// The write-up for /work/c-compiler, rendered inside ProjectPage's reading column.
-// Plain <p> and <h2>; the template styles them.
+// The write-up for /work/leetcode, rendered inside ProjectPage's reading column.
+// Plain <p> and <h2>; the template styles them. Images go in this folder:
+// import shot from './shot.png?figure', then <Figure src={shot} alt="..." />.
 // Lorem ipsum until the real write-up exists.
 
 function Body() {

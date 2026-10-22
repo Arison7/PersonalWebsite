@@ -27,7 +27,9 @@ export function preloadImages(urls: string[], concurrency = 2) {
   for (let i = 0; i < concurrency; i++) next()
 }
 
-// Every page's images; only the bio photo that matches the colour scheme.
+// Every page's lead images: the bio photo that matches the colour scheme and
+// each collage block's (a project's cover). Not the figures inside a post,
+// which load lazily as you scroll down to them.
 export function allPageImages() {
   const dark = window.matchMedia('(prefers-color-scheme: dark)').matches
   const urls = [
