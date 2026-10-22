@@ -34,4 +34,9 @@ export const interests: CollageItem[] = [
     description: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.',
     image: 'https://picsum.photos/seed/interest6/1200/900',
   },
+  {
+    title: 'Learning German',
+    description: 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis.',
+    image: 'https://picsum.photos/seed/interest7/1200/900',
+  },
 ]
