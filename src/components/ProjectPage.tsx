@@ -4,6 +4,7 @@ import { useVim, useVimBindings } from '../context/VimContext'
 import Kbd from './Kbd'
 import BottomBar from './BottomBar'
 import LoadingImage from './LoadingImage'
+import { FaArrowUpRightFromSquare, FaGithub } from 'react-icons/fa6'
 
 // The template every project's page shares, written up blog style: the image
 // from its collage block as the hero (it morphs over from the block), then a
@@ -15,6 +16,23 @@ const prose =
   'flex flex-col gap-5 pt-4 text-[17px] leading-[1.7] lg:text-[19px] [&_h2]:pt-4 [&_h2]:text-2xl [&_h2]:font-semibold lg:[&_h2]:text-[28px]'
 
 const back = 'flex min-h-11 items-center gap-2.5 px-2.5 font-mono text-sm text-ink hover:text-accent'
+
+// a GitHub icon for GitHub, a generic external-link one for anywhere else
+function SourceLink({ href }: { href: string }) {
+  const github = new URL(href).hostname === 'github.com'
+  const Icon = github ? FaGithub : FaArrowUpRightFromSquare
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="-mx-2.5 flex min-h-11 items-center gap-2 px-2.5 font-mono text-[13px] text-ink hover:text-accent"
+    >
+      <Icon aria-hidden="true" className="size-4" />
+      {github ? 'View on GitHub' : 'View source'}
+    </a>
+  )
+}
 
 function ProjectPage() {
   const { slug } = useParams()
@@ -57,7 +75,10 @@ function ProjectPage() {
             {project.title}
           </h1>
           <p className="text-lg leading-[1.55] lg:text-[21px]">{project.description}</p>
-          <span className="border-b border-line pb-6 font-mono text-[13px] text-muted">{project.meta}</span>
+          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-line pb-6">
+            <span className="font-mono text-[13px] text-muted">{project.meta}</span>
+            {project.source && <SourceLink href={project.source} />}
+          </div>
 
           <div className={prose}>
             <project.Body />

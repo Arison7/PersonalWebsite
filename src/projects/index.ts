@@ -28,6 +28,8 @@ export type Project = {
   image: string
   // short mono line: stack, dates, role
   meta: string
+  // optional link to the source; shown with a GitHub icon when it's on GitHub
+  source?: string
   // the write-up under the title, in the page's reading column
   Body: ComponentType
 }
@@ -36,9 +38,10 @@ export const projects: Project[] = [
   {
     slug: 'muzeyt',
     title: 'Muzeyt',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
+    description: 'A terminal music player in Rust, built around async message passing.',
     image: muzeytCover,
-    meta: 'lorem · ipsum',
+    meta: 'Rust · Tokio · ratatui · 2025',
+    source: 'https://github.com/Arison7/muzeyt',
     Body: Muzeyt,
   },
   // internship
@@ -53,9 +56,10 @@ export const projects: Project[] = [
   {
     slug: 'messager-api',
     title: 'MessagerApi',
-    description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
+    description: 'A real-time chat app with a Django back end and a React front end.',
     image: messagerApiCover,
-    meta: 'lorem · ipsum',
+    meta: 'Django · Channels · React · TypeScript · 2022–2023',
+    source: 'https://github.com/Arison7/MessagerApi',
     Body: MessagerApi,
   },
   {
