@@ -10,7 +10,6 @@ import photoLight from '../assets/photo-light.webp'
 import photoDark from '../assets/photo-dark.webp'
 
 // content for bio
-// All copy except the name is lorem ipsum until the real text is written.
 
 // all but email open in a new tab; the CV is served from public/
 const links = [

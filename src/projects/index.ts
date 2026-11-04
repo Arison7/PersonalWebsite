@@ -1,4 +1,4 @@
-import type { ComponentType } from 'react'
+import type { Post } from '../posts'
 import Muzeyt from './muzeyt'
 import CrsfFuzzer from './crsf-fuzzer'
 import MessagerApi from './messager-api'
@@ -11,30 +11,15 @@ import PersonalWebsite from './personal-website'
 import muzeytCover from './muzeyt/cover.png?cover'
 import crsfFuzzerCover from './crsf-fuzzer/cover.webp?cover'
 import messagerApiCover from './messager-api/cover.png?cover'
+import leetcodeCover from './leetcode/cover.png?cover'
 import cCompilerCover from './c-compiler/cover.png?cover'
 import greenBridgeCover from './green-bridge/cover.png?cover'
 
 // content for work: internship and projects, shared by the Work collage and
-// each project's own page (/work/<slug>). ProjectPage is the template; each
-// project has its own folder next to this one (<slug>/): the write-up in
-// index.tsx, its cover and any images it shows alongside.
+// each project's own page (/work/<slug>). See src/posts.ts.
 // Lorem ipsum until the real text exists; picsum.photos where there's no cover yet.
 
-export type Project = {
-  // the project's URL segment
-  slug: string
-  title: string
-  description: string
-  image: string
-  // short mono line: stack, dates, role
-  meta: string
-  // optional link to the source; shown with a GitHub icon when it's on GitHub
-  source?: string
-  // the write-up under the title, in the page's reading column
-  Body: ComponentType
-}
-
-export const projects: Project[] = [
+export const projects: Post[] = [
   {
     slug: 'muzeyt',
     title: 'Muzeyt',
@@ -48,9 +33,12 @@ export const projects: Project[] = [
   {
     slug: 'crsf-fuzzer',
     title: 'CRSF fuzzer',
-    description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.',
+    description: 'A black-box CRSF fuzzer in Rust, built during my internship at AIT to find weak spots in a drone\'s flight controller.',
     image: crsfFuzzerCover,
-    meta: 'lorem · ipsum',
+    meta: 'Rust · Tokio · CRSF · Internship (NDA) · 2026',
+    // the code is under NDA, so the link is AIT's confirmation of the internship instead
+    source: '/Lukasz-Krysmalski-AIT-Confirmation.pdf',
+    sourceLabel: 'AIT confirmation (PDF)',
     Body: CrsfFuzzer,
   },
   {
@@ -65,39 +53,37 @@ export const projects: Project[] = [
   {
     slug: 'leetcode',
     title: 'LeetCode',
-    description: 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis.',
-    image: 'https://picsum.photos/seed/work7/1200/900',
-    meta: 'lorem · ipsum',
+    description: '479 problems solved, most of them in C++, with a daily habit that lasted over a year.',
+    image: leetcodeCover,
+    meta: 'C++ · Python · Rust · 2022–2023',
+    source: 'https://leetcode.com/u/arison646/',
     Body: Leetcode,
   },
   {
     slug: 'c-compiler',
     title: 'C compiler in Rust',
-    description: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',
+    description: 'A small C compiler written in Rust, from source code to x86 assembly.',
     image: cCompilerCover,
-    meta: 'lorem · ipsum',
+    meta: 'Rust · x86 assembly · 2025',
+    source: 'https://github.com/Arison7/rust-compiler',
     Body: CCompiler,
   },
   {
     slug: 'green-bridge',
     title: 'Green Bridge',
-    description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.',
+    description: 'A pattern language for bringing forest bathing into the green spaces of European cities.',
     image: greenBridgeCover,
-    meta: 'lorem · ipsum',
+    meta: 'HZ Honours · React · Tailwind · 2026',
+    source: 'https://greenbridge-honours.com/',
     Body: GreenBridge,
   },
   {
     slug: 'personal-website',
     title: 'Personal website',
-    description: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.',
+    description: 'This site: a React app you can drive with vim keybindings.',
     image: 'https://picsum.photos/seed/work6/1200/900',
-    meta: 'lorem · ipsum',
+    meta: 'React · TypeScript · Tailwind · Vite · 2026',
+    source: 'https://github.com/Arison7/PersonalWebsite',
     Body: PersonalWebsite,
   },
 ]
-
-// Shared by the collage block's image and the project page's hero, so the
-// browser morphs one into the other on navigation (View Transitions).
-export function imageTransitionName(slug: string) {
-  return `project-image-${slug}`
-}

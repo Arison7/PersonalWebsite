@@ -1,4 +1,4 @@
-// The write-up for /work/messager-api, rendered inside ProjectPage's reading column.
+// The write-up for /work/messager-api, rendered inside PostPage's reading column.
 // Plain <p> and <h2>; the template styles them. Images go in this folder:
 // import shot from './shot.png?figure', then <Figure src={shot} alt="..." />.
 

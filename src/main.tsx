@@ -6,7 +6,9 @@ import App from './App.tsx'
 import Bio from './components/Bio.tsx'
 import Interests from './components/Interests.tsx'
 import Work from './components/Work.tsx'
-import ProjectPage from './components/ProjectPage.tsx'
+import PostPage from './components/PostPage.tsx'
+import { projects } from './projects'
+import { interests } from './interests'
 import { pagePaths } from './hooks/usePage.ts'
 import { Page } from './types.ts'
 
@@ -24,8 +26,12 @@ const router = createBrowserRouter([
     children: [
       { path: pagePaths[Page.Bio], element: <Bio /> },
       { path: pagePaths[Page.Interests], element: <Interests /> },
+      {
+        path: `${pagePaths[Page.Interests]}/:slug`,
+        element: <PostPage page={Page.Interests} posts={interests} />,
+      },
       { path: pagePaths[Page.Work], element: <Work /> },
-      { path: `${pagePaths[Page.Work]}/:slug`, element: <ProjectPage /> },
+      { path: `${pagePaths[Page.Work]}/:slug`, element: <PostPage page={Page.Work} posts={projects} /> },
       { path: '*', element: <Navigate to={pagePaths[Page.Bio]} replace /> },
     ],
   },
