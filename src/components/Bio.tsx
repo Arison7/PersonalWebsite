@@ -172,34 +172,16 @@ function SideNav() {
   )
 }
 
-// hand-drawn line along the cutout's edge, in the photo's own 599×960 space
-// TODO: the photo will change so this is not a solution
-const outline =
-  'M580 531 L589 520 L598 518 L598 473 L587 470 L582 463 L512 430 L458 395 L447 384 L426 341 L425 334 L438 300 L448 275 L456 267 L464 250 L489 228 L507 197 L512 182 L512 165 L509 151 L494 125 L485 97 L466 64 L437 34 L401 29 L380 18 L341 17 L272 30 L253 39 L241 52 L223 86 L209 124 L208 143 L202 170 L211 183 L217 205 L229 267 L238 286 L238 293 L224 327 L215 334 L177 336 L143 341 L76 364 L44 380 L18 407 L18 465 L10 476 L0 477 L0 873 L5 872 L15 878'
-
-// Grayscale cutout with the outline traced over it, placed as in the mockup:
-// centred on phones, low in the right column on desktop. The dark variant is
+// Grayscale cutout: centred on phones, level with the text on desktop. The dark variant is
 // retoned for the dark background and follows the OS, like the palette.
-// Shimmers until the photo is in; the outline waits for it.
+// Shimmers until the photo is in.
 function Photo() {
   return (
-    <div className="group absolute top-10 left-1/2 aspect-[599/960] w-40 -translate-x-1/2 lg:top-[300px] lg:left-[150px] lg:w-[281px] lg:translate-x-0">
+    <div className="absolute top-10 left-1/2 aspect-[599/960] w-40 -translate-x-1/2 lg:top-1/2 lg:left-[150px] lg:w-[281px] lg:translate-x-0 lg:-translate-y-1/2">
       <picture>
         <source media="(prefers-color-scheme: dark)" srcSet={photoDark} />
         <LoadingImage src={photoLight} alt="Photo of Łukasz" className="size-full" />
       </picture>
-      <svg
-        viewBox="0 0 599 960"
-        aria-hidden="true"
-        className="absolute inset-0 size-full translate-x-[3px] -translate-y-0.5 opacity-0 transition-opacity duration-200 group-has-[img[data-loaded]]:opacity-100"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2.3}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d={outline} vectorEffect="non-scaling-stroke" />
-      </svg>
     </div>
   )
 }

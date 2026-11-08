@@ -1,6 +1,8 @@
 // The write-up for /work/leetcode, rendered inside PostPage's reading column.
 // Plain <p> and <h2>; the template styles them. Images go in this folder:
 // import shot from './shot.png?figure', then <Figure src={shot} alt="..." />.
+import Figure from '../../components/Figure'
+import badges from './badges.png?figure'
 
 function Body() {
   return (
@@ -22,6 +24,11 @@ function Body() {
         The grind ended when I picked up a part time summer job before university, ain't no way i have a time 
         to solve leetcode after 16 h shift in a resturant.
       </p>
+      <Figure
+        src={badges}
+        alt="LeetCode's Daily Medals: one badge for every month from June 2022 to June 2023"
+        caption="The daily challenge badges, June 2022 to June 2023."
+      />
 
       <h2>Languages</h2>
       <p>

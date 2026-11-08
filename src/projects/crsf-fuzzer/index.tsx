@@ -1,8 +1,12 @@
 // The write-up for /work/crsf-fuzzer, rendered inside PostPage's reading column.
 // Plain <p> and <h2>; the template styles them. Images go in this folder:
 // import shot from './shot.png?figure', then <Figure src={shot} alt="..." />.
-// TODO: add the pictures (see the placeholders below); without them the page is a wall of text.
+// Only pictures AIT has already published (the COTS drone deck on ResearchGate), cited in a caption,
+// plus the photo of the internship trophy.
 // Technologies are bold on first mention, for skimming.
+import Figure from '../../components/Figure'
+import testbed from './testbed.png?figure'
+import trophy from './trophy.jpg?figure'
 
 function Body() {
   return (
@@ -15,29 +19,33 @@ function Body() {
         with more research along the way whenever we hit something new.
       </p>
 
-      <h2>A note on the NDA</h2>
-      <p>
-        Since the project hasn't been finished it remains property of AIT, thus I had to sign an NDA,
-        meaning I am not allowed to share any code or talk about some details. With that in mind I would
-        like to focus this article more on my experience and a few example problems I faced.
-        In place of the code, the link at the top of this page is AIT's official confirmation of my internship, which lists what I worked on.
-      </p>
-
       <h2>The environment</h2>
       <p>
-        Since the idea is to attack a black-box flight controller, emulation was out of the question. Thankfully the team
+        Since the idea is to test a commercial off-the-shelf (COTS) drone as it ships, without its firmware or source code, the fuzzer runs
+        against the real hardware rather than an emulated flight controller. Thankfully the team
         already had the environment mostly ready, consisting of an exposed drone's body with easy access to its components and
         a <strong>Raspberry Pi</strong> with a screen that was connected to those components in various ways, collecting and sending data. The Pi
         was also where we ran the code of the fuzzer plus a few helper programs that I built along the way, mostly for easier
         data collection. The fuzzer itself obtained data through sockets, often already cleaned by the helper programs.
       </p>
+      <Figure
+        src={testbed}
+        alt="The testbed: a drone in an open hard case with a monitor, interceptors and power supply, a labelled close-up of the drone's components, and a second case with the pilot's monitor and controller"
+        caption={
+          <>
+            The testbed. From M. Eckhart and P.-S. Vogt,{' '}
+            <a href="https://www.researchgate.net/publication/414460235_Low-Cost_Portable_Security_Testing_for_Commercial-Off-the-Shelf_COTS_Drones">
+              "Low-Cost, Portable Security Testing for Commercial-Off-the-Shelf (COTS) Drones"
+            </a>
+            , IKT-Sicherheitskonferenz 2026.
+          </>
+        }
+      />
       <p>
         All the programs were written in <strong>Rust</strong> and ran as system processes on startup. Without going into too much detail, the first example
         was a revolutions per minute (RPM) measuring program that collected, shared (over a socket), visualized and persisted data from
         rotary encoders attached to the drone's motors. The second was a very simple program that set IO pins connected
         to our power source on and off, which allowed us to power-cycle the drone itself, letting the fuzzer create a clean state when it needed it.
-        Our electrical engineer had planned for this far ahead, so it was possible
-        to switch off just the drone even though, technically speaking, the Raspberry Pi is powered by the same cable.
       </p>
       <p>
         An interesting challenge that came from working on a physical environment was that DevOps had to be handled in a non-conventional way.
@@ -48,8 +56,6 @@ function Body() {
         for security reasons it wasn't connected to the internal network. To keep it safe, access was split between separate keys: the Pi
         only had a read-only one, so it could download new packages but never change anything, and a short script took care of installing them.
       </p>
-      {/* picture: the drone suitcase, annotated if this can be added due to NDA */}
-      {/* picture: the standalone test FC */}
 
       <h2>Understanding the problem</h2>
       <p>
@@ -59,8 +65,8 @@ function Body() {
       </p>
       <p>
         A fuzzer depends on good <strong>oracles</strong> (its way of telling that an input made something go wrong). They need to know a lot about the state of the program to both explore and break it or to even know what broken
-        state looks like for that matter. With a black-box we were cut off from a lot of usual methods such as code coverage, which is commonly used for emulated
-        targets, or memory inspection, which can work even on black-box hardware through a debug port. However, that was out of scope,
+        state looks like for that matter. With a black-box we were cut off from a lot of usual methods such as code coverage, which normally needs the source code, an emulator
+        or a hardware trace, or memory inspection, which can work even on black-box hardware through a debug port. However, that was out of scope,
         since we can't guarantee access to it: a real target may have read-out protection that locks the port, or the port may be
         physically removed altogether.
       </p>
@@ -68,7 +74,7 @@ function Body() {
         Another thing that was missing altogether were strict rules in the Team BlackSheep Crossfire (TBS CRSF) documentation. In essence the protocol doesn't
         guarantee a response, nor does it even expect all the codes to be implemented. Furthermore, it's easily expandable, which is good for the protocol as a whole, but not so good
         when you are trying to figure out a way to efficiently scan it for potentially malfunctioning frames. This means it wasn't possible to create a tight grammar for grammar-based
-        fuzzing, since in some places the rules were too vague. What we ended up with instead was inspired by research in the field: an <strong>in-code grammar</strong> representation.
+        fuzzing, since in some places the rules were too vague. What we ended up with instead was an <strong>in-code grammar</strong> representation.
       </p>
 
       <h2>The fuzzer in short</h2>
@@ -88,7 +94,6 @@ function Body() {
         was referred to as <strong>"Validation"</strong> and unfortunately I wasn't able to fully finish it. I still find it interesting though, and I am happy to share more about it if asked, but it is a bit too lengthy for
         this article.
       </p>
-      {/* picture: the loop diagram (maybe if i redo it ) */}
 
       <h2>Getting async right</h2>
       <p>
@@ -109,18 +114,17 @@ function Body() {
 
       <h2>My supervisor</h2>
       <p>
-        The principle I just mentioned was not the only thing my supervisor taught me throughout this internship, and I think it would be a disservice not to name him here.
-        I had the pleasure of working under Matthias Eckhart, a postdoctoral scientist at AIT who researches the security of cyber-physical systems and earned his PhD at TU Wien with highest distinction.
+        The principle I just mentioned was not the only thing my supervisor taught me throughout this internship.
+        I worked under Matthias Eckhart, at the time a postdoctoral scientist at AIT researching the security of cyber-physical systems.
         He set the direction of the project, pushed me to back every idea with research and always left room for me to argue back.
-        You can find more about him and his work on <a href="https://www.matthiaseckhart.com/">his website</a>, and he is happy to give a personal reference on request.
+        You can find more about his work on <a href="https://www.matthiaseckhart.com/">his website</a>.
       </p>
 
       <h2>Brainstorming together</h2>
       <p>
         One of the best parts of this internship, and what I enjoyed the most, was being part of the brainstorming sessions. I can confidently say that I spent hours in front of a whiteboard with the team and had fun doing so.
-        It was also a really good learning experience to quickly understand the thought process of people more experienced in the field. Below is the aftermath of one of the sessions.
+        It was also a really good learning experience to quickly understand the thought process of people more experienced in the field.
       </p>
-      {/* picture: a whiteboard session */}
 
       <h2>What it taught me</h2>
       <p>
@@ -134,10 +138,9 @@ function Body() {
         <li>How drones operate, how they are built and how their components communicate, as well as their points of failure.</li>
         <li>
           A bit about electrical engineering, from soldering to reading signals with a <strong>logic analyzer</strong>. Massive thanks
-          to <a href="https://www.linkedin.com/in/philipp-sebastian-vogt/">Philipp-Sebastian Vogt</a> (below is my first time soldering a Y-cable).
+          to <a href="https://www.linkedin.com/in/philipp-sebastian-vogt/">Philipp-Sebastian Vogt</a>.
         </li>
       </ul>
-      {/* picture: a soldered Y-cable */}
 
       <h2>A note on AI</h2>
       <p>
@@ -154,7 +157,12 @@ function Body() {
         who somehow made the office a more fun place just by being there. Finally, a thank you to the Cyber Range team. We did not overlap much day to day,
         but every conversation we did have was a genuinely good one.
       </p>
-      {/* picture: the team */}
+      <Figure
+        src={trophy}
+        alt="A yellow 3D-printed drone trophy on a black base that reads 2026, AIT CPSS Internship, Lukasz Krysmalski"
+        caption="The trophy I got from the team at the end of the internship, as a thank you."
+        maxWidth={320}
+      />
     </>
   )
 }

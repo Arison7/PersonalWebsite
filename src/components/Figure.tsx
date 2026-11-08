@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import LoadingImage from './LoadingImage'
 
 // An image inside a post's write-up, from a '?figure' import (vite.config.ts):
@@ -14,12 +15,14 @@ export type Picture = {
 type FigureProps = {
   src: Picture
   alt: string
-  caption?: string
+  caption?: ReactNode
+  // caps the width (px) and centres it, for pictures that shouldn't fill the column
+  maxWidth?: number
 }
 
-function Figure({ src, alt, caption }: FigureProps) {
+function Figure({ src, alt, caption, maxWidth }: FigureProps) {
   return (
-    <figure className="flex flex-col gap-3 py-2">
+    <figure className="mx-auto flex w-full flex-col gap-3 py-2" style={{ maxWidth }}>
       <picture>
         {Object.entries(src.sources).map(([format, srcSet]) => (
           <source key={format} type={`image/${format}`} srcSet={srcSet} sizes="(min-width: 768px) 720px, 100vw" />

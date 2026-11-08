@@ -14,10 +14,10 @@ import messagerApiCover from './messager-api/cover.png?cover'
 import leetcodeCover from './leetcode/cover.png?cover'
 import cCompilerCover from './c-compiler/cover.png?cover'
 import greenBridgeCover from './green-bridge/cover.png?cover'
+import personalWebsiteCover from './personal-website/cover.png?cover'
 
 // content for work: internship and projects, shared by the Work collage and
 // each project's own page (/work/<slug>). See src/posts.ts.
-// Lorem ipsum until the real text exists; picsum.photos where there's no cover yet.
 
 export const projects: Post[] = [
   {
@@ -35,8 +35,8 @@ export const projects: Post[] = [
     title: 'CRSF fuzzer',
     description: 'A black-box CRSF fuzzer in Rust, built during my internship at AIT to find weak spots in a drone\'s flight controller.',
     image: crsfFuzzerCover,
-    meta: 'Rust · Tokio · CRSF · Internship (NDA) · 2026',
-    // the code is under NDA, so the link is AIT's confirmation of the internship instead
+    meta: 'Rust · Tokio · CRSF · Internship · 2026',
+    // the code belongs to AIT, so the link is AIT's confirmation of the internship instead
     source: '/Lukasz-Krysmalski-AIT-Confirmation.pdf',
     sourceLabel: 'AIT confirmation (PDF)',
     Body: CrsfFuzzer,
@@ -81,7 +81,7 @@ export const projects: Post[] = [
     slug: 'personal-website',
     title: 'Personal website',
     description: 'This site: a React app you can drive with vim keybindings.',
-    image: 'https://picsum.photos/seed/work6/1200/900',
+    image: personalWebsiteCover,
     meta: 'React · TypeScript · Tailwind · Vite · 2026',
     source: 'https://github.com/Arison7/PersonalWebsite',
     Body: PersonalWebsite,
