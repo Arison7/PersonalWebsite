@@ -3,6 +3,10 @@ import tailwindcss from '@tailwindcss/vite'
 import { imagetools } from 'vite-imagetools'
 import { defineConfig } from 'vite'
 
+// TODO: add embed meta tags (og:title, og:description, og:url, og:image, twitter:card).
+// Crawlers don't run JS, so per-post cards need a build step that writes
+// dist/<section>/<slug>/index.html for each post from its title, description and cover.
+
 // Image presets, picked by the import's query (types in src/images.d.ts).
 // Neither ever upscales, so a small original stays its own size.
 const presets: Record<string, Record<string, string>> = {

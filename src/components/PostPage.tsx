@@ -24,6 +24,7 @@ const prose =
   '[&_blockquote]:border-l-2 [&_blockquote]:border-accent [&_blockquote]:pl-5 [&_blockquote]:text-xl [&_blockquote]:italic lg:[&_blockquote]:text-[22px] ' +
   '[&_blockquote_footer]:mt-2 [&_blockquote_footer]:font-mono [&_blockquote_footer]:text-sm [&_blockquote_footer]:text-muted [&_blockquote_footer]:not-italic ' +
   // an <a> in the text: underlined in the accent, so it reads as a link
+  '[&_cite]:font-semibold [&_cite]:text-accent [&_cite]:not-italic ' +
   '[&_a]:underline [&_a]:decoration-accent [&_a]:underline-offset-4 [&_a:hover]:text-accent ' +
   // a <ul>: bullets in the accent, a little space between items
   '[&_ul]:flex [&_ul]:list-disc [&_ul]:flex-col [&_ul]:gap-2 [&_ul]:pl-6 [&_li]:marker:text-accent'
