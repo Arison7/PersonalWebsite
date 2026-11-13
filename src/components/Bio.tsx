@@ -63,7 +63,7 @@ const timeline: {
     title: 'BSc Information and Communication Technology',
     subtitle: 'HZ University of Applied Sciences',
     description: `Progressed from basics of computer science, game and web development
-through a **Svelte** and **PHP/Laravel** web application for a real client (Stedin) in an agile
+through a **Svelte** and **PHP/Laravel** web application for Stedin in an agile
 workflow, to microservices in **TypeScript** and basics of data science in **Python**.
 Currently in my last year working on a product for Meijers Potato.`
   },
@@ -100,6 +100,13 @@ that would be hard to find by reading code alone.`,
     subtitle: 'Fachhochschule Vorarlberg',
     description:
       'Chose the university with the best subjects on offer: Augmented Reality, embedded programming in **C** on a **Raspberry Pi**, DevOps, Mobile App Development, Computer Graphics, Blockchain Technologies and German for internationals.',
+  },
+  {
+    date: '2024',
+    title: 'Transformer monitoring app for Stedin',
+    subtitle: 'University project',
+    description:
+      'A **Laravel** web app built by a team of seven to show the status of Stedin\'s transformers on a **Leaflet** map. I made the postcode markers and the date filter, moved the front end from JavaScript to **TypeScript**, and handled merging everyone\'s code.',
   },
   {
     date: 'Jun 2022 – May 2023',
