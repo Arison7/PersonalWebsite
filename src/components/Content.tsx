@@ -7,12 +7,13 @@ import { Outlet } from 'react-router-dom'
 function Content() {
   return (
     // grows to fill the viewport so the collage can size its rows to it
-    <section className="flex flex-1 flex-col">
+    // <main>, so crawlers and agents can tell the page from its navigation
+    <main className="flex flex-1 flex-col">
 
       {/* swappable */}
       <Outlet />
 
-    </section>
+    </main>
   )
 }
 

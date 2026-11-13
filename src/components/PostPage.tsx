@@ -39,8 +39,9 @@ const sites: Record<string, { Icon: IconType; label: string }> = {
 }
 
 function SourceLink({ href, label: customLabel }: { href: string; label?: string }) {
-  // a path like /file.pdf is resolved against this site
-  const url = new URL(href, window.location.origin)
+  // a path like /file.pdf is on this site; any base works for reading its
+  // pathname, and this one also renders at build time, where there's no window
+  const url = new URL(href, 'https://localhost')
   const { Icon, label } = url.pathname.endsWith('.pdf')
     ? { Icon: FaRegFileLines, label: 'Download PDF' }
     : (sites[url.hostname] ?? { Icon: FaArrowUpRightFromSquare, label: 'Visit website' })

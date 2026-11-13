@@ -1,5 +1,6 @@
+import { Link } from 'react-router-dom'
 import { Page } from '../types'
-import { usePage } from '../hooks/usePage'
+import { pagePaths, usePage } from '../hooks/usePage'
 import { useVim } from '../context/VimContext'
 import Kbd from './Kbd'
 import BottomBar from './BottomBar'
@@ -9,21 +10,21 @@ import BottomBar from './BottomBar'
 // header on desktop, in the bottom bar on phones (where bio has its links too).
 
 function Header() {
-  const { activePage, setActivePage } = usePage()
+  const { activePage } = usePage()
   const { enabled } = useVim()
   const bioOnLeft = activePage === Page.Interests
   const title = activePage === Page.Interests ? 'Interests' : 'Work'
 
   const back = (className: string) => (
-    <button
-      type="button"
-      onClick={() => setActivePage(Page.Bio)}
+    // a real link, so crawlers and AI agents can follow it
+    <Link
+      to={pagePaths[Page.Bio]}
       className={`min-h-11 items-center gap-2.5 font-mono text-sm text-ink hover:text-accent ${className}`}
     >
       {bioOnLeft ? '← Bio' : 'Bio →'}
       {/* key hints only where there's likely a keyboard */}
       {enabled && <Kbd className="hidden lg:inline">{bioOnLeft ? 'h' : 'l'}</Kbd>}
-    </button>
+    </Link>
   )
 
   return (

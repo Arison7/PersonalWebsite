@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Page } from '../types'
-import { usePage } from '../hooks/usePage'
+import { pagePaths } from '../hooks/usePage'
 import { useVim } from '../context/VimContext'
 import Kbd from './Kbd'
 import LoadingImage from './LoadingImage'
@@ -152,29 +152,27 @@ function SectionLabel({ children }: { children: string }) {
 // Links to the neighbouring pages: pinned to the sides on desktop,
 // a bar along the bottom on smaller screens.
 function SideNav() {
-  const { setActivePage } = usePage()
   const { enabled } = useVim()
   const base =
     'flex min-h-11 items-center justify-center px-2.5 py-3 font-mono text-sm text-ink hover:text-accent lg:flex-col lg:gap-2'
 
+  // real links rather than buttons, so crawlers and AI agents can follow them
   return (
     <nav className="fixed inset-x-0 bottom-0 z-10 grid grid-cols-2 border-t border-line bg-paper lg:static lg:block lg:border-0">
-      <button
-        type="button"
-        onClick={() => setActivePage(Page.Work)}
+      <Link
+        to={pagePaths[Page.Work]}
         className={`${base} lg:fixed lg:top-1/2 lg:left-7 lg:-translate-y-1/2`}
       >
         ← Work
         {enabled && <Kbd className="hidden lg:inline">h</Kbd>}
-      </button>
-      <button
-        type="button"
-        onClick={() => setActivePage(Page.Interests)}
+      </Link>
+      <Link
+        to={pagePaths[Page.Interests]}
         className={`${base} lg:fixed lg:top-1/2 lg:right-7 lg:-translate-y-1/2`}
       >
         Interests →
         {enabled && <Kbd className="hidden lg:inline">l</Kbd>}
-      </button>
+      </Link>
     </nav>
   )
 }
